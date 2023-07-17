@@ -27,3 +27,8 @@ func NewHandler(eventHandler EventHandler, devices ...*Device) *Handler {
 func (h *Handler) GetDevices() []*Device {
 	return h.devices
 }
+
+func (h *Handler) SetDevices(devices ...*Device) {
+	// TODO: passing the EventHandler pointer to each device first
+	h.devices = devices
+}
