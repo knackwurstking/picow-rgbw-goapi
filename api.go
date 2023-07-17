@@ -1,7 +1,7 @@
 package api
 
 var (
-	DevicesUpdateEvent = "devices updated"
+	DevicesUpdateEvent = "devices update"
 )
 
 // EventHandler interface to use
