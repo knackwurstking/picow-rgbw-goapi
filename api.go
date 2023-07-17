@@ -1,7 +1,8 @@
 package api
 
 var (
-	DevicesUpdateEvent = "devices update"
+	EventDevicesUpdate = "devices update"
+	EventDeviceError   = "device error"
 )
 
 // EventHandler interface to use
@@ -9,6 +10,7 @@ var (
 //   - `DevicesUpdateEvent` is dispatched if the handler devices private field was updated
 type EventHandler interface {
 	Dispatch(eventName string)
+	DispatchWithMessage(eventName, message string)
 }
 
 type Device struct {
@@ -22,8 +24,8 @@ func NewDevice() *Device {
 // Handler handles all `picow-rgbw-micropython` devices
 type Handler struct {
 	eventHandler EventHandler
-
-	devices []*Device
+	autoUpdate   bool
+	devices      []*Device
 }
 
 func NewHandler(eventHandler EventHandler, devices ...*Device) *Handler {
@@ -44,6 +46,10 @@ func (h *Handler) SetEventHandler(eventHandler EventHandler) {
 	}
 }
 
+func (h *Handler) SetAutoUpdate(state bool) {
+	h.autoUpdate = state
+}
+
 func (h *Handler) GetDevices() []*Device {
 	return h.devices
 }
@@ -56,6 +62,8 @@ func (h *Handler) SetDevices(devices ...*Device) {
 	h.devices = devices
 
 	if h.eventHandler != nil {
-		h.eventHandler.Dispatch(DevicesUpdateEvent)
+		h.eventHandler.Dispatch(EventDevicesUpdate)
 	}
+
+	// TODO: Set pins and duty for each device (dispatch `EventDeviceError` on failure with the error message passed as data)
 }
