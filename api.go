@@ -48,7 +48,6 @@ func (h *Handler) GetDevices() []*Device {
 }
 
 func (h *Handler) SetDevices(devices ...*Device) {
-	// TODO: Dispatch event: "devices-updated"
 	for _, device := range devices {
 		device.eventHandler = h.eventHandler
 	}
