@@ -1,7 +1,7 @@
 package api
 
 type EventHandler interface {
-	Handler(eventName string)
+	Dispatch(eventName string)
 }
 
 type Device struct {
