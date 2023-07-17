@@ -1,10 +1,18 @@
 package api
 
+var (
+	DevicesUpdateEvent = "devices updated"
+)
+
+// EventHandler interface to use
+// Events in use from the Handler and Device structs:
+//   - `DevicesUpdateEvent` is dispatched if the handler devices private field was updated
 type EventHandler interface {
 	Dispatch(eventName string)
 }
 
 type Device struct {
+	eventHandler EventHandler
 }
 
 func NewDevice() *Device {
@@ -12,15 +20,26 @@ func NewDevice() *Device {
 }
 
 type Handler struct {
-	EventHandler EventHandler
+	eventHandler EventHandler
 
 	devices []*Device
 }
 
 func NewHandler(eventHandler EventHandler, devices ...*Device) *Handler {
 	return &Handler{
-		EventHandler: eventHandler,
+		eventHandler: eventHandler,
 		devices:      devices,
+	}
+}
+
+func (h *Handler) GetEventHandler() EventHandler {
+	return h.eventHandler
+}
+
+func (h *Handler) SetEventHandler(eventHandler EventHandler) {
+	h.eventHandler = eventHandler
+	for _, device := range h.devices {
+		device.eventHandler = h.eventHandler
 	}
 }
 
@@ -29,6 +48,14 @@ func (h *Handler) GetDevices() []*Device {
 }
 
 func (h *Handler) SetDevices(devices ...*Device) {
-	// TODO: passing the EventHandler pointer to each device first
+	// TODO: Dispatch event: "devices-updated"
+	for _, device := range devices {
+		device.eventHandler = h.eventHandler
+	}
+
 	h.devices = devices
+
+	if h.eventHandler != nil {
+		h.eventHandler.Dispatch(DevicesUpdateEvent)
+	}
 }
