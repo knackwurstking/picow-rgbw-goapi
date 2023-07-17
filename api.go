@@ -19,6 +19,7 @@ func NewDevice() *Device {
 	return &Device{}
 }
 
+// Handler handles all `picow-rgbw-micropython` devices
 type Handler struct {
 	eventHandler EventHandler
 
