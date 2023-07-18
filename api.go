@@ -1,5 +1,7 @@
 package api
 
+import "sync"
+
 var (
 	EventDevicesUpdate = "devices update"
 	EventDeviceError   = "device error"
@@ -13,12 +15,18 @@ type EventHandler interface {
 	DispatchWithMessage(eventName, message string)
 }
 
+// Device handles a picow device
 type Device struct {
 	eventHandler EventHandler
 }
 
 func NewDevice() *Device {
 	return &Device{}
+}
+
+// Update sets duty and pins on the device, if missing, get it from the device
+func (d *Device) Update() {
+	// TODO: Device update...
 }
 
 // Handler handles all `picow-rgbw-micropython` devices
@@ -65,5 +73,16 @@ func (h *Handler) SetDevices(devices ...*Device) {
 		h.eventHandler.Dispatch(EventDevicesUpdate)
 	}
 
-	// TODO: Set pins and duty for each device (dispatch `EventDeviceError` on failure with the error message passed as data)
+	go h.InitializeDevices()
+}
+
+func (h *Handler) InitializeDevices() {
+	var wg sync.WaitGroup
+	for _, device := range h.devices {
+		wg.Add(1)
+		go func(device *Device, wg *sync.WaitGroup) {
+			defer wg.Done()
+			device.Update()
+		}(device, &wg)
+	}
 }
