@@ -25,7 +25,7 @@ func NewDevice() *Device {
 }
 
 // Update sets duty and pins on the device, if missing, get it from the device
-func (d *Device) Update() {
+func (d *Device) Sync() {
 	// TODO: Device update...
 }
 
@@ -82,7 +82,7 @@ func (h *Handler) InitializeDevices() {
 		wg.Add(1)
 		go func(device *Device, wg *sync.WaitGroup) {
 			defer wg.Done()
-			device.Update()
+			device.Sync()
 		}(device, &wg)
 	}
 }
