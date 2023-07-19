@@ -73,7 +73,7 @@ func NewDevice(host string, port int) *Device {
 	}
 }
 
-func (d *Device) isOffline() bool {
+func (d *Device) IsOffline() bool {
 	return d.offline
 }
 
