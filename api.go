@@ -73,6 +73,10 @@ func NewDevice(host string, port int) *Device {
 	}
 }
 
+func (d *Device) isOffline() bool {
+	return d.offline
+}
+
 func (d *Device) GetAddr() string {
 	return fmt.Sprintf("%s:%d", d.Host, d.Port)
 }
