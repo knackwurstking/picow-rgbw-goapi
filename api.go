@@ -79,7 +79,6 @@ func (d *Device) GetAddr() string {
 
 // UpdateDevice will send the current duty and pin to the picow device
 func (d *Device) UpdateDevice() (err error) {
-	// TODO: offline/online handling on error
 	var data []int
 
 	// Set pins
