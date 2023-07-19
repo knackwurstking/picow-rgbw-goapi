@@ -78,7 +78,7 @@ func (d *Device) GetAddr() string {
 }
 
 // UpdateDevice will send the current duty and pin to the picow device
-func (d *Device) UpdateDevice() (err error) {
+func (d *Device) Update() (err error) {
 	var data []int
 
 	// Set pins
@@ -155,7 +155,6 @@ func (d *Device) handleError(err error) error {
 // Handler handles all `picow-rgbw-micropython` devices
 type Handler struct {
 	eventHandler EventHandler
-	autoUpdate   bool
 	devices      []*Device
 }
 
@@ -175,10 +174,6 @@ func (h *Handler) SetEventHandler(eventHandler EventHandler) {
 	for _, device := range h.devices {
 		device.eventHandler = h.eventHandler
 	}
-}
-
-func (h *Handler) SetAutoUpdate(state bool) {
-	h.autoUpdate = state
 }
 
 func (h *Handler) GetDevices() []*Device {
