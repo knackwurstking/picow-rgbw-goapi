@@ -1,10 +1,23 @@
 package api
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 var (
+	// Handler Events
+
 	EventDevicesUpdate = "devices update"
 	EventDeviceError   = "device error"
+
+	// PicoW Commands
+
+	TCPCommandGetColor = "rgbw color get;"
+	TCPCommandSetColor = "rgbw color set %d %d %d %d;"
+
+	TCPCommandGetPins = "rgbw gp get;"
+	TCPCommandSetPins = "rgbw gp set %d %d %d %d;"
 )
 
 // EventHandler interface to use
@@ -85,4 +98,32 @@ func (h *Handler) InitializeDevices() {
 			device.Sync()
 		}(device, &wg)
 	}
+}
+
+// Command for picow control
+type Command struct {
+}
+
+func NewCommand() *Command {
+	return &Command{}
+}
+
+func (c *Command) Run(device *Device, command string, doRead bool) {
+	// TODO: ...
+}
+
+func (c *Command) GetPins() string {
+	return TCPCommandGetPins
+}
+
+func (c *Command) SetPins(r, g, b, w int) string {
+	return fmt.Sprintf(TCPCommandSetPins, r, g, b, w)
+}
+
+func (c *Command) GetColor() string {
+	return TCPCommandGetColor
+}
+
+func (c *Command) SetColor(r, g, b, w int) string {
+	return fmt.Sprintf(TCPCommandSetColor, r, g, b, w)
 }
