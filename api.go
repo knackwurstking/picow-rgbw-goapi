@@ -40,7 +40,6 @@ var (
 //   - `DevicesUpdateEvent` is dispatched if the handler devices private field was updated
 type EventHandler interface {
 	Dispatch(eventName string)
-	DispatchWithMessage(eventName, message string)
 	DispatchWithData(eventName string, data any)
 }
 
@@ -135,7 +134,7 @@ func (d *Device) handleError(err error) error {
 			}
 		}
 		if d.eventHandler != nil {
-			d.eventHandler.DispatchWithMessage(EventDeviceError, err.Error())
+			d.eventHandler.DispatchWithData(EventDeviceError, err.Error())
 		}
 	default:
 		if d.offline {
@@ -145,7 +144,7 @@ func (d *Device) handleError(err error) error {
 			}
 		}
 		if d.eventHandler != nil {
-			d.eventHandler.DispatchWithMessage(EventDeviceError, err.Error())
+			d.eventHandler.DispatchWithData(EventDeviceError, err.Error())
 		}
 	}
 
