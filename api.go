@@ -41,7 +41,7 @@ var (
 type EventHandler interface {
 	Dispatch(eventName string)
 	DispatchWithMessage(eventName, message string)
-	DispatchWithData(eventName, data any)
+	DispatchWithData(eventName string, data any)
 }
 
 /*
