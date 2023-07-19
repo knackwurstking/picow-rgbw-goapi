@@ -12,7 +12,7 @@ var (
 	 */
 
 	// EventDevicesUpdate contains no message or data
-	EventDevicesUpdate = "devices update"
+	EventDevicesUpdated = "devices updated"
 	// EventDeviceError event contains a message
 	EventDeviceError = "device error"
 	// EventDeviceOnline event will contain `*Device` data
@@ -192,7 +192,7 @@ func (h *Handler) SetDevices(devices ...*Device) {
 	h.devices = devices
 
 	if h.eventHandler != nil {
-		h.eventHandler.Dispatch(EventDevicesUpdate)
+		h.eventHandler.Dispatch(EventDevicesUpdated)
 	}
 }
 
