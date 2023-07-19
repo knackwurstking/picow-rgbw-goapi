@@ -41,6 +41,8 @@ var (
 type EventHandler interface {
 	Dispatch(eventName string)
 	DispatchWithData(eventName string, data any)
+	AddListener(eventName string, listener func(data any))
+	RemoveListener(eventName string)
 }
 
 /*
