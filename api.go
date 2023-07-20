@@ -181,6 +181,16 @@ func (h *Handler) SetEventHandler(eventHandler EventHandler) {
 	}
 }
 
+func (h *Handler) GetDevicePerAddr(addr string) *Device {
+	for _, device := range h.devices {
+		if device.GetAddr() == addr {
+			return device
+		}
+	}
+
+	return nil
+}
+
 func (h *Handler) AddDevice(d *Device) {
 	// Check if device exists (host and port should be unique)
 	for i, device := range h.devices {
