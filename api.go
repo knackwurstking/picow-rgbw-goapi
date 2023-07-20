@@ -181,6 +181,20 @@ func (h *Handler) SetEventHandler(eventHandler EventHandler) {
 	}
 }
 
+func (h *Handler) AddDevice(d *Device) {
+	// Check if device exists (host and port should be unique)
+	for i, device := range h.devices {
+		if device.GetAddr() == d.GetAddr() {
+			// Replace device
+			d.eventHandler = h.eventHandler
+			h.devices[i] = d
+			return
+		}
+	}
+
+	h.devices = append(h.devices, d)
+}
+
 func (h *Handler) GetDevices() []*Device {
 	return h.devices
 }
