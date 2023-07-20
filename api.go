@@ -61,16 +61,15 @@ type Device struct {
 	Data []Pin  `json:"data"`
 
 	eventHandler EventHandler
-	command      *Command
+	command      Command
 
 	offline bool
 }
 
 func NewDevice(host string, port int) *Device {
 	return &Device{
-		Host:    host,
-		Port:    port,
-		command: NewCommand(),
+		Host: host,
+		Port: port,
 	}
 }
 
@@ -113,6 +112,11 @@ func (d *Device) Update() (err error) {
 	}
 
 	return nil
+}
+
+func (d *Device) SetColor(r, g, b, w int) error {
+	_, err := d.command.Run(d, d.command.SetColor(r, g, b, w), false)
+	return err
 }
 
 func (d *Device) handleError(err error) error {
