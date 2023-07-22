@@ -63,7 +63,7 @@ type Device struct {
 	eventHandler EventHandler
 	command      Command
 
-	offline bool
+	Offline bool `json:"offline"`
 }
 
 func NewDevice(host string, port int) *Device {
@@ -71,10 +71,6 @@ func NewDevice(host string, port int) *Device {
 		Host: host,
 		Port: port,
 	}
-}
-
-func (d *Device) IsOffline() bool {
-	return d.offline
 }
 
 func (d *Device) GetAddr() string {
@@ -121,8 +117,8 @@ func (d *Device) SetColor(r, g, b, w int) error {
 
 func (d *Device) handleError(err error) error {
 	if err == nil {
-		if d.offline {
-			d.offline = false
+		if d.Offline {
+			d.Offline = false
 			if d.eventHandler != nil {
 				d.eventHandler.DispatchWithData(EventDeviceOnline, d)
 			}
@@ -133,8 +129,8 @@ func (d *Device) handleError(err error) error {
 
 	switch err.(type) {
 	case *DialError:
-		if !d.offline {
-			d.offline = true
+		if !d.Offline {
+			d.Offline = true
 			if d.eventHandler != nil {
 				d.eventHandler.DispatchWithData(EventDeviceOffline, d)
 			}
@@ -143,8 +139,8 @@ func (d *Device) handleError(err error) error {
 			d.eventHandler.DispatchWithData(EventDeviceError, err.Error())
 		}
 	default:
-		if d.offline {
-			d.offline = false
+		if d.Offline {
+			d.Offline = false
 			if d.eventHandler != nil {
 				d.eventHandler.DispatchWithData(EventDeviceOnline, d)
 			}
