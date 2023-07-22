@@ -19,6 +19,8 @@ var (
 	EventDeviceOnline = "device online"
 	// EventDeviceOffline event will contain `*Device` data
 	EventDeviceOffline = "device offline"
+	// EventColorChanged event will contain `*Device` data
+	EventColorChanged = "color changed"
 
 	/*
 	 * PicoW Commands
@@ -128,6 +130,10 @@ func (d *Device) SetDataColor(r, g, b, w int) {
 			continue
 		}
 		break
+	}
+
+	if d.eventHandler != nil {
+		d.eventHandler.DispatchWithData(EventColorChanged, d)
 	}
 }
 
