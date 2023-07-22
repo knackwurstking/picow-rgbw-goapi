@@ -111,10 +111,24 @@ func (d *Device) Update() (err error) {
 }
 
 func (d *Device) SetColor(r, g, b, w int) error {
-	// TODO: Need to update the devices data and call dispatch and event ("devices updated"? or "color change"?)
 	// NOTE: Or just call a GetColor?
 	_, err := d.command.Run(d, d.command.SetColor(r, g, b, w), false)
-	return err
+	if err != nil {
+		return err
+	}
+	d.SetDataColor(r, g, b, w)
+
+	return nil
+}
+
+func (d *Device) SetDataColor(r, g, b, w int) {
+	for i, c := range []int{r, g, b, w} {
+		if i+1 <= len(d.Data) {
+			d.Data[i].Duty = c
+			continue
+		}
+		break
+	}
 }
 
 func (d *Device) handleError(err error) error {
