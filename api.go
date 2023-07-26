@@ -224,6 +224,7 @@ func (h *Handler) AddDevice(d *Device) {
 		}
 	}
 
+	d.eventHandler = h.eventHandler
 	h.devices = append(h.devices, d)
 }
 
