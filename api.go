@@ -113,9 +113,9 @@ func (d *Device) Update() (err error) {
 }
 
 func (d *Device) SetColor(r, g, b, w int) error {
-	// NOTE: Or just call a GetColor?
 	_, err := d.command.Run(d, d.command.SetColor(r, g, b, w), false)
 	if err != nil {
+		// TODO: handle error (this should dispatch the device "offline" event)
 		return err
 	}
 	d.SetDataColor(r, g, b, w)
