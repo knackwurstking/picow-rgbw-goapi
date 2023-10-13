@@ -1,3 +1,3 @@
-module github.com/knackwurstking/picow-rgbw-micropython-goapi
+module github.com/knackwurstking/picow-rgbw-goapi
 
 go 1.20
